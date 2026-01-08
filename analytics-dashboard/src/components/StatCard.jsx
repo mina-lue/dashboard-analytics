@@ -1,8 +1,7 @@
 import React from 'react';
 
 const StatCard = ({ label, value, trend, color, icon: Icon }) => (
-    <div className="bg-white p-2 rounded-md border border-slate-200 relative w-full transition-all hover:shadow-xl hover:-translate-y-1 group flex items-center gap-5 min-h-[110px]">
-        <div className="absolute top-0 left-0 w-1 h-full" style={{ backgroundColor: color }} />
+    <div className="bg-white p-2 rounded-xl border border-slate-200 relative w-full transition-all hover:shadow-xl hover:-translate-y-1 group flex items-center gap-5 min-h-[80px]">
         <div
             className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-md transition-transform group-hover:scale-110 flex-shrink-0"
             style={{ backgroundColor: color, boxShadow: `0 8px 20px ${color}33` }}

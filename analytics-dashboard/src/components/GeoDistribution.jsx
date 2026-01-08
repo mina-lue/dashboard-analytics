@@ -2,7 +2,6 @@ import React from 'react';
 import {
     RadialBarChart,
     RadialBar,
-    Graphic,
     Tooltip as RechartsTooltip,
     ResponsiveContainer
 } from 'recharts';
