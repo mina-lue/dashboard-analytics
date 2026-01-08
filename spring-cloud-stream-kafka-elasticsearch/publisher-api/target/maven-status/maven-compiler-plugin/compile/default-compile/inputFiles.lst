@@ -1,0 +1,12 @@
+C:\Users\minal\ws\upwork\spring-cloud-stream-kafka-elasticsearch\publisher-api\src\main\java\com\ivanfranchin\publisherapi\config\CacheConfig.java
+C:\Users\minal\ws\upwork\spring-cloud-stream-kafka-elasticsearch\publisher-api\src\main\java\com\ivanfranchin\publisherapi\config\CorsConfig.java
+C:\Users\minal\ws\upwork\spring-cloud-stream-kafka-elasticsearch\publisher-api\src\main\java\com\ivanfranchin\publisherapi\config\ErrorAttributesConfig.java
+C:\Users\minal\ws\upwork\spring-cloud-stream-kafka-elasticsearch\publisher-api\src\main\java\com\ivanfranchin\publisherapi\config\SpringDataWebSupportConfig.java
+C:\Users\minal\ws\upwork\spring-cloud-stream-kafka-elasticsearch\publisher-api\src\main\java\com\ivanfranchin\publisherapi\config\SwaggerConfig.java
+C:\Users\minal\ws\upwork\spring-cloud-stream-kafka-elasticsearch\publisher-api\src\main\java\com\ivanfranchin\publisherapi\news\dto\SearchRequest.java
+C:\Users\minal\ws\upwork\spring-cloud-stream-kafka-elasticsearch\publisher-api\src\main\java\com\ivanfranchin\publisherapi\news\exception\NewsNotFoundException.java
+C:\Users\minal\ws\upwork\spring-cloud-stream-kafka-elasticsearch\publisher-api\src\main\java\com\ivanfranchin\publisherapi\news\model\News.java
+C:\Users\minal\ws\upwork\spring-cloud-stream-kafka-elasticsearch\publisher-api\src\main\java\com\ivanfranchin\publisherapi\news\NewsController.java
+C:\Users\minal\ws\upwork\spring-cloud-stream-kafka-elasticsearch\publisher-api\src\main\java\com\ivanfranchin\publisherapi\news\NewsRepository.java
+C:\Users\minal\ws\upwork\spring-cloud-stream-kafka-elasticsearch\publisher-api\src\main\java\com\ivanfranchin\publisherapi\news\NewsService.java
+C:\Users\minal\ws\upwork\spring-cloud-stream-kafka-elasticsearch\publisher-api\src\main\java\com\ivanfranchin\publisherapi\PublisherApiApplication.java

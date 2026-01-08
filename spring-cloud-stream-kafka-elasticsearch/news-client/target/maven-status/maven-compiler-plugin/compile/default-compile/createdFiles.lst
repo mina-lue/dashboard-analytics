@@ -1,0 +1,10 @@
+com\ivanfranchin\newsclient\NewsClientApplication.class
+com\ivanfranchin\newsclient\news\NewsController.class
+com\ivanfranchin\newsclient\news\client\PublisherApiClient.class
+com\ivanfranchin\newsclient\config\WebSocketConfig.class
+com\ivanfranchin\newsclient\news\dto\SearchRequest.class
+com\ivanfranchin\newsclient\news\dto\News.class
+com\ivanfranchin\newsclient\util\DateTimeUtil.class
+com\ivanfranchin\newsclient\config\SchemaRegistryConfig.class
+com\ivanfranchin\newsclient\news\NewsEventListener.class
+com\ivanfranchin\newsclient\news\dto\MyPage.class

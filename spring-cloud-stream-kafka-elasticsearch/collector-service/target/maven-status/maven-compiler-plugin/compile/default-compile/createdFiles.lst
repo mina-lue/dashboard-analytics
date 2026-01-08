@@ -1,0 +1,5 @@
+com\ivanfranchin\collectorservice\news\News.class
+com\ivanfranchin\collectorservice\news\NewsRepository.class
+com\ivanfranchin\collectorservice\CollectorServiceApplication.class
+com\ivanfranchin\collectorservice\config\SchemaRegistryConfig.class
+com\ivanfranchin\collectorservice\news\NewsEventProcessor.class
