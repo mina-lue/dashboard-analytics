@@ -3,8 +3,8 @@ import { Cpu, Lock } from 'lucide-react';
 
 const SystemHealth = () => {
     return (
-        <div className="col-span-12 2xl:col-span-4 grid grid-cols-1 gap-8 h-full">
-            <div className="bg-[#0f172a] rounded-[3.5rem] p-10 text-white border border-slate-800 shadow-2xl relative overflow-hidden flex flex-col justify-center">
+        <div className="col-span-12 2xl:col-span-4 grid grid-cols-1 gap-8 h-full w-1/3">
+            <div className="bg-[#0f172a] rounded-xl p-2 text-white border border-slate-800 shadow-2xl relative overflow-hidden flex flex-col justify-center  p-4">
                 <div className="absolute inset-0 bg-[radial-gradient(#6366f1_1px,transparent_1px)] opacity-10 [background-size:24px_24px]" />
                 <div className="relative z-10">
                     <div className="flex justify-between items-center mb-10">
@@ -34,19 +34,6 @@ const SystemHealth = () => {
                         ))}
                     </div>
                 </div>
-            </div>
-
-            <div className="bg-white rounded-[3.5rem] p-10 border border-slate-200 shadow-sm flex flex-col group hover:shadow-2xl transition-all">
-                <div className="w-16 h-16 bg-rose-50 rounded-3xl flex items-center justify-center text-rose-500 mb-8 border border-rose-100 shadow-inner group-hover:rotate-6 transition-transform">
-                    <Lock size={32} />
-                </div>
-                <h3 className="text-2xl font-black text-slate-900 tracking-tighter mb-2">Compliance Hub</h3>
-                <p className="text-slate-400 text-sm font-medium mb-10 leading-relaxed uppercase tracking-wider text-[11px] font-black">All active streams are verified against SOC-2 and HIPAA protocols.</p>
-                <div className="flex -space-x-3 mb-8">
-                    {[1, 2, 3, 4].map(i => <div key={i} className="w-10 h-10 rounded-full border-4 border-white bg-slate-100 overflow-hidden shadow-lg"><img src={`https://ui-avatars.com/api/?name=U${i}&background=f1f5f9&color=64748b`} /></div>)}
-                    <div className="w-10 h-10 rounded-full border-4 border-white bg-indigo-500 flex items-center justify-center text-[10px] font-black text-white shadow-xl">+12</div>
-                </div>
-                <button className="mt-auto py-5 bg-slate-900 text-white rounded-3xl text-sm font-black uppercase tracking-[0.2em] shadow-2xl hover:bg-slate-800 transition-colors">Access Control List</button>
             </div>
         </div>
     );

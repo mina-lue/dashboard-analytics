@@ -82,7 +82,7 @@ function App() {
     <div className="flex min-h-screen bg-[#f1f5f9] font-outfit text-slate-800">
       <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
 
-      <main className="lg:ml-80 flex-grow p-4 md:p-10 lg:p-8 transition-all">
+      <main className="lg:ml-60 flex-grow p-4 md:p-10 lg:p-8 transition-all">
         <Header activeTab={activeTab} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
         <div className="grid grid-cols-12 gap-8">
@@ -96,8 +96,10 @@ function App() {
           </div>
 
           {/* Row 2: Charts */}
-          <ThroughputChart data={TRAFFIC_DATA} />
-          <SystemHealth />
+          <div className="col-span-12 flex gap-6">
+            <ThroughputChart data={TRAFFIC_DATA} />
+            <SystemHealth />
+          </div>
 
           {/* Row 3: Geo & Category */}
           <GeoDistribution categoryCounts={categoryCounts} totalEvents={newsData.length} />

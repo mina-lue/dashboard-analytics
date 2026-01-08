@@ -12,14 +12,14 @@ import {
 
 const Sidebar = ({ activeTab, setActiveTab }) => {
     return (
-        <aside className="fixed left-0 top-0 h-screen w-80 bg-white border-r border-slate-200 hidden lg:flex flex-col p-8 z-50 shadow-2xl shadow-slate-200/50">
+        <aside className="fixed left-0 top-0 h-screen w-64 bg-white border-r border-slate-200 hidden lg:flex flex-col p-8 z-50 shadow-2xl shadow-slate-200/50">
             <div className="flex items-center gap-4 mb-12 group cursor-pointer">
-                <div className="w-12 h-12 bg-indigo-600 rounded-2xl flex items-center justify-center shadow-xl shadow-indigo-600/30 group-hover:rotate-12 transition-all">
-                    <Zap size={28} className="text-white fill-current" />
+                <div className="w-8 h-8 p-1 bg-indigo-600 rounded-2xl flex items-center justify-center shadow-xl shadow-indigo-600/30 group-hover:rotate-12 transition-all">
+                    <Zap size={24} className="text-white fill-current" />
                 </div>
                 <div>
-                    <h1 className="text-2xl font-black tracking-tighter text-slate-900 leading-none">ANTIGRAVITY</h1>
-                    <p className="text-[10px] text-indigo-500 font-black uppercase tracking-[0.2em] mt-1.5">Systems Engine</p>
+                    <h1 className="text-xl font-semibold tracking-tighter text-slate-900 leading-none">DASHBOARD</h1>
+                    <p className="text-[8px] text-center text-indigo-500 font-black uppercase tracking-[0.2em] mt-1.5">Systems Engine</p>
                 </div>
             </div>
 
