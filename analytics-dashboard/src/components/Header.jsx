@@ -3,7 +3,7 @@ import { Search as SearchIcon, Bell } from 'lucide-react';
 
 const Header = ({ activeTab, searchQuery, setSearchQuery }) => {
     return (
-        <header className="flex flex-col lg:flex-row justify-between items-center gap-8 mb-8">
+        <header className="flex flex-col lg:flex-row justify-between items-center gap-8 mb-4 px-12">
             <div className="flex-shrink-0">
                 <h2 className="text-2xl font-semibold tracking-tighter text-slate-900">{activeTab}</h2>
             </div>

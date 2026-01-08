@@ -11,10 +11,10 @@ import CustomTooltip from './CustomTooltip';
 const GeoDistribution = ({ categoryCounts, totalEvents }) => {
     return (
         <div className="col-span-12 grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="bg-white p-10 rounded-[4.5rem] border border-slate-200 shadow-sm flex flex-col min-h-[500px]">
-                <div className="flex justify-between items-start mb-10 px-2">
+            <div className="bg-white p-10 rounded-xl border border-slate-200 shadow-sm flex flex-col min-h-[500px]">
+                <div className="flex justify-between items-start mb-10">
                     <div>
-                        <h3 className="text-2xl font-black text-slate-900 tracking-tight leading-none mb-2">Category Mix</h3>
+                        <h3 className="text-xl font-black text-slate-900 tracking-tight leading-none mb-2">Category Mix</h3>
                         <p className="text-slate-400 text-[11px] font-black uppercase tracking-widest">Volume distribution</p>
                     </div>
                     <div className="p-3 bg-slate-50 rounded-2xl border border-slate-100"><Filter size={18} className="text-slate-400" /></div>
