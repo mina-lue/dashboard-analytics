@@ -62,15 +62,15 @@ const COLORS = ['#6366f1', '#6366f1', '#f59e0b', '#10b981', '#3b82f6'];
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
-      <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.95)', padding: '16px', borderRadius: '16px', boxShadow: '0 20px 40px rgba(0,0,0,0.1)', border: '1px solid rgba(0,0,0,0.05)', backdropFilter: 'blur(10px)' }}>
-        <p style={{ fontWeight: 900, fontSize: '12px', color: '#1e293b', marginBottom: '8px', borderBottom: '1px solid #f1f5f9', paddingBottom: '4px' }}>{label}</p>
+      <div className="bg-white/95 p-4 rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.1)] border border-black/5 backdrop-blur-md">
+        <p className="font-black text-xs text-slate-800 mb-2 border-b border-slate-100 pb-1">{label}</p>
         {payload.map((entry, index) => (
-          <div key={index} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px', margin: '4px 0' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: entry.color }} />
-              <p style={{ fontSize: '10px', fontWeight: 800, color: '#64748b', textTransform: 'uppercase' }}>{entry.name}</p>
+          <div key={index} className="flex items-center justify-between gap-4 my-1">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full" style={{ backgroundColor: entry.color }} />
+              <p className="text-[10px] font-extrabold text-slate-500 uppercase">{entry.name}</p>
             </div>
-            <p style={{ fontSize: '12px', fontWeight: 900, color: '#0f172a' }}>{entry.value}</p>
+            <p className="text-xs font-black text-slate-900">{entry.value}</p>
           </div>
         ))}
       </div>
@@ -81,9 +81,8 @@ const CustomTooltip = ({ active, payload, label }) => {
 
 // --- COMPONENTS ---
 const StatCard = ({ label, value, trend, color, icon: Icon }) => (
-  <div className="bg-white p-5 rounded-[2rem] border border-slate-200 relative overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1 group flex items-center gap-5"
-    style={{ minHeight: '110px', background: 'white' }}>
-    <div style={{ position: 'absolute', top: 0, left: 0, width: '4px', height: '100%', backgroundColor: color }} />
+  <div className="bg-white p-5 rounded-[2rem] border border-slate-200 relative overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1 group flex items-center gap-5 min-h-[110px]">
+    <div className="absolute top-0 left-0 w-1 h-full" style={{ backgroundColor: color }} />
     <div
       className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-md transition-transform group-hover:scale-110 flex-shrink-0"
       style={{ backgroundColor: color, boxShadow: `0 8px 20px ${color}33` }}
@@ -161,10 +160,10 @@ function App() {
   const categories = ['All', ...new Set(newsData.map(item => item.category))];
 
   return (
-    <div className="flex min-h-screen bg-slate-100 font-outfit text-slate-800" style={{ background: '#f1f5f9' }}>
+    <div className="flex min-h-screen bg-[#f1f5f9] font-outfit text-slate-800">
 
       {/* --- SIDEBAR --- */}
-      <aside className="fixed left-0 top-0 h-screen w-80 bg-white border-r border-slate-200 hidden lg:flex flex-col p-8 z-50 shadow-2xl shadow-slate-200/50" style={{ background: 'white' }}>
+      <aside className="fixed left-0 top-0 h-screen w-80 bg-white border-r border-slate-200 hidden lg:flex flex-col p-8 z-50 shadow-2xl shadow-slate-200/50">
         <div className="flex items-center gap-4 mb-12 group cursor-pointer">
           <div className="w-12 h-12 bg-indigo-600 rounded-2xl flex items-center justify-center shadow-xl shadow-indigo-600/30 group-hover:rotate-12 transition-all">
             <Zap size={28} className="text-white fill-current" />
@@ -268,7 +267,7 @@ function App() {
           </div>
 
           {/* Row 2: Main Chart and Performance Summary */}
-          <div className="col-span-12 2xl:col-span-8 bg-white p-10 rounded-[4rem] border border-slate-200 shadow-sm relative overflow-hidden group min-h-[550px]" style={{ background: 'white' }}>
+          <div className="col-span-12 2xl:col-span-8 bg-white p-10 rounded-[4rem] border border-slate-200 shadow-sm relative overflow-hidden group min-h-[550px]">
             <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-indigo-500/5 rounded-full blur-[100px] pointer-events-none group-hover:scale-110 transition-transform duration-1000" />
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-12 relative z-10">
               <div>
@@ -282,7 +281,7 @@ function App() {
               </div>
             </div>
 
-            <div style={{ height: '400px', width: '100%', position: 'relative', zInternal: 10 }}>
+            <div className="h-[400px] w-full relative z-10">
               <ResponsiveContainer width="100%" height="100%">
                 <ComposedChart data={TRAFFIC_DATA}>
                   <defs>
@@ -304,7 +303,7 @@ function App() {
           </div>
 
           <div className="col-span-12 2xl:col-span-4 grid grid-cols-1 gap-8 h-full">
-            <div className="bg-slate-900 rounded-[3.5rem] p-10 text-white border border-slate-800 shadow-2xl relative overflow-hidden flex flex-col justify-center" style={{ backgroundColor: '#0f172a' }}>
+            <div className="bg-[#0f172a] rounded-[3.5rem] p-10 text-white border border-slate-800 shadow-2xl relative overflow-hidden flex flex-col justify-center">
               <div className="absolute inset-0 bg-[radial-gradient(#6366f1_1px,transparent_1px)] opacity-10 [background-size:24px_24px]" />
               <div className="relative z-10">
                 <div className="flex justify-between items-center mb-10">
@@ -336,7 +335,7 @@ function App() {
               </div>
             </div>
 
-            <div className="bg-white rounded-[3.5rem] p-10 border border-slate-200 shadow-sm flex flex-col group hover:shadow-2xl transition-all" style={{ background: 'white' }}>
+            <div className="bg-white rounded-[3.5rem] p-10 border border-slate-200 shadow-sm flex flex-col group hover:shadow-2xl transition-all">
               <div className="w-16 h-16 bg-rose-50 rounded-3xl flex items-center justify-center text-rose-500 mb-8 border border-rose-100 shadow-inner group-hover:rotate-6 transition-transform">
                 <Lock size={32} />
               </div>
@@ -352,7 +351,7 @@ function App() {
 
           {/* Row 3: Category Spread and World View */}
           <div className="col-span-12 grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="bg-white p-10 rounded-[4.5rem] border border-slate-200 shadow-sm flex flex-col min-h-[500px]" style={{ background: 'white' }}>
+            <div className="bg-white p-10 rounded-[4.5rem] border border-slate-200 shadow-sm flex flex-col min-h-[500px]">
               <div className="flex justify-between items-start mb-10 px-2">
                 <div>
                   <h3 className="text-2xl font-black text-slate-900 tracking-tight leading-none mb-2">Category Mix</h3>
@@ -370,7 +369,7 @@ function App() {
                     </div>
                   ))}
                 </div>
-                <div style={{ height: '350px', width: '100%' }}>
+                <div className="h-[350px] w-full">
                   <ResponsiveContainer width="100%" height="100%">
                     <RadialBarChart innerRadius="25%" outerRadius="120%" data={categoryCounts} startAngle={180} endAngle={-90} barSize={22}>
                       <RadialBar minAngle={15} background={{ fill: '#f8fafc' }} dataKey="value" radius={30} cornerRadius={20} />
@@ -385,7 +384,7 @@ function App() {
               </div>
             </div>
 
-            <div className="lg:col-span-2 bg-white rounded-[4.5rem] border border-slate-200 overflow-hidden shadow-sm relative group p-12 flex flex-col" style={{ background: 'white' }}>
+            <div className="lg:col-span-2 bg-white rounded-[4.5rem] border border-slate-200 overflow-hidden shadow-sm relative group p-12 flex flex-col">
               <div className="flex justify-between items-start mb-10 flex-wrap gap-6">
                 <div>
                   <h3 className="text-3xl font-black text-slate-900 tracking-tighter leading-none mb-3">Geographic Ingestion</h3>
@@ -405,7 +404,7 @@ function App() {
               </div>
 
               <div className="flex-grow bg-slate-50 rounded-[3.5rem] border-2 border-slate-100 relative group overflow-hidden">
-                <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#6366f1 1.5px, transparent 1.5px)', backgroundSize: '30px 30px' }} />
+                <div className="absolute inset-0 opacity-20 pointer-events-none bg-[radial-gradient(#6366f1_1.5px,transparent_1.5px)] bg-[length:30px_30px]" />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <Globe size={200} className="text-indigo-500/10 animate-pulse" />
                 </div>
@@ -434,7 +433,7 @@ function App() {
           </div>
 
           {/* Row 4: Detailed Multi-Tab Table */}
-          <div className="col-span-12 bg-white rounded-[5rem] border-2 border-slate-200 overflow-hidden shadow-2xl relative mt-8" style={{ background: 'white' }}>
+          <div className="col-span-12 bg-white rounded-[5rem] border-2 border-slate-200 overflow-hidden shadow-2xl relative mt-8">
             <div className="p-10 md:p-14 border-b border-slate-100 flex flex-col 2xl:flex-row justify-between items-start 2xl:items-center gap-12 bg-slate-50/50">
               <div className="flex gap-6 items-center">
                 <div className="w-20 h-20 bg-indigo-600 rounded-[2.5rem] flex items-center justify-center text-white shadow-2xl shadow-indigo-600/30">
@@ -552,7 +551,7 @@ function App() {
             </div>
           </div>
         </footer>
-      </main>
+      </main >
 
       <style>
         {`
@@ -598,7 +597,7 @@ function App() {
           }
         `}
       </style>
-    </div>
+    </div >
   );
 }
 
