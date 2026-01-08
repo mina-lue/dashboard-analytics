@@ -14,21 +14,20 @@ import CustomTooltip from './CustomTooltip';
 
 const ThroughputChart = ({ data }) => {
     return (
-        <div className="col-span-12 2xl:col-span-8 bg-white p-10 rounded-[4rem] border border-slate-200 shadow-sm relative overflow-hidden group min-h-[550px]">
-            <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-indigo-500/5 rounded-full blur-[100px] pointer-events-none group-hover:scale-110 transition-transform duration-1000" />
-            <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-12 relative z-10">
+        <div className="col-span-12 bg-white p-2 rounded-md border border-slate-200 shadow-sm relative overflow-hidden group min-h-[120px] w-1/3">
+            <div className="absolute top-0 w-[400px] h-[400px] bg-indigo-500/5 rounded-full blur-[100px] pointer-events-none group-hover:scale-110 transition-transform duration-1000" />
+            <div className="flex flex-col justify-between items-start gap-6 mb-8 relative z-10">
                 <div>
-                    <h3 className="text-3xl font-black text-slate-900 tracking-tighter mb-2">Throughput Analytics</h3>
-                    <p className="text-slate-400 font-medium max-w-sm">Detailed message processing rate vs hardware capacity spikes.</p>
+                    <h3 className="text-xl font-semibold text-slate-900 tracking-tighter">Throughput Analytics</h3>
                 </div>
-                <div className="flex bg-slate-100 p-2 rounded-2xl gap-2 shadow-inner">
+                <div className="flex bg-slate-100 p-1 rounded-2xl gap-2 shadow-inner justify-center">
                     {['Hourly', 'Daily', 'Weekly'].map(t => (
-                        <button key={t} className={`px-6 py-2 rounded-xl text-[11px] font-black ${t === 'Hourly' ? 'bg-white shadow-xl text-indigo-600' : 'text-slate-500'}`}>{t}</button>
+                        <button key={t} className={`px-2 py-1 rounded-xl text-[11px] font-semibold ${t === 'Hourly' ? 'bg-white shadow-xl text-indigo-600' : 'text-slate-500'}`}>{t}</button>
                     ))}
                 </div>
             </div>
 
-            <div className="h-[400px] w-full relative z-10">
+            <div className="h-[200px] w-full relative z-10">
                 <ResponsiveContainer width="100%" height="100%">
                     <ComposedChart data={data}>
                         <defs>
@@ -38,12 +37,12 @@ const ThroughputChart = ({ data }) => {
                             </linearGradient>
                         </defs>
                         <CartesianGrid strokeDasharray="8 8" vertical={false} stroke="#f1f5f9" />
-                        <XAxis dataKey="time" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 900 }} dy={15} />
-                        <YAxis axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 900 }} dx={-10} />
+                        <XAxis dataKey="time" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 6, fontWeight: 90 }} dy={5} />
+                        <YAxis axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 6, fontWeight: 90 }} dx={-5} />
                         <RechartsTooltip content={<CustomTooltip />} cursor={{ fill: '#f8fafc' }} />
-                        <Bar dataKey="events" fill="#e2e8f0" radius={[16, 16, 0, 0]} barSize={60} />
-                        <Area type="monotone" dataKey="throughput" stroke="#6366f1" strokeWidth={6} fill="url(#mainGrad)" />
-                        <Line type="monotone" dataKey="latency" stroke="#ec4899" strokeWidth={5} dot={{ r: 8, fill: '#ec4899', strokeWidth: 4, stroke: '#fff' }} activeDot={{ r: 10, fill: '#ec4899' }} />
+                        <Bar dataKey="events" fill="#a9b0b9" fillOpacity={0.6} radius={[6, 6, 0, 0]} barSize={5} />
+                        <Line type="monotone" dataKey="throughput" stroke="#6366f1" strokeWidth={3} dot={{ r: 2, fill: '#6366f1', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 4, fill: '#6366f1' }} z={10} />
+                        <Line type="monotone" dataKey="latency" stroke="#ec4899" strokeWidth={3} dot={{ r: 2, fill: '#ec4899', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 4, fill: '#ec4899' }} z={10} />
                     </ComposedChart>
                 </ResponsiveContainer>
             </div>
