@@ -80,68 +80,28 @@ const CustomTooltip = ({ active, payload, label }) => {
 };
 
 // --- COMPONENTS ---
-const StatCard = ({ label, value, trend, color, icon: Icon, data }) => (
-  <div className="bg-white p-6 rounded-[2.5rem] border border-slate-200 relative overflow-hidden transition-all hover:shadow-2xl hover:shadow-indigo-500/10 hover:-translate-y-1 group"
-    style={{ minHeight: '220px', display: 'flex', flexDirection: 'column', background: 'white' }}>
-    <div style={{ position: 'absolute', top: 0, left: 0, width: '6px', height: '100%', backgroundColor: color }} />
-    <div className="flex justify-between items-start mb-4">
-      <div
-        className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg transition-transform group-hover:scale-110"
-        style={{ backgroundColor: color, boxShadow: `0 10px 25px ${color}44` }}
-      >
-        <Icon size={24} className="text-white fill-current" />
-      </div>
-      <div className={`px-2 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${trend.includes('+') ? 'bg-emerald-100 text-emerald-600' : 'bg-rose-100 text-rose-600'}`}>
-        {trend}
-      </div>
+const StatCard = ({ label, value, trend, color, icon: Icon }) => (
+  <div className="bg-white p-5 rounded-[2rem] border border-slate-200 relative overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1 group flex items-center gap-5"
+    style={{ minHeight: '110px', background: 'white' }}>
+    <div style={{ position: 'absolute', top: 0, left: 0, width: '4px', height: '100%', backgroundColor: color }} />
+    <div
+      className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-md transition-transform group-hover:scale-110 flex-shrink-0"
+      style={{ backgroundColor: color, boxShadow: `0 8px 20px ${color}33` }}
+    >
+      <Icon size={20} className="text-white fill-current" />
     </div>
-    <p className="text-slate-400 text-[10px] font-black uppercase tracking-[0.2em] mb-1">{label}</p>
-    <div className="flex items-center gap-2">
-      <h3 className="text-4xl font-black text-slate-900 tracking-tighter">{value}</h3>
-      <ArrowUpRight size={16} className={trend.includes('+') ? 'text-emerald-500' : 'text-slate-300'} />
-    </div>
-    <div className="h-16 w-full mt-auto -mx-1 opacity-20 group-hover:opacity-100 transition-opacity">
-      <ResponsiveContainer width="100%" height="100%">
-        <AreaChart data={data}>
-          <Area type="monotone" dataKey="events" stroke={color} fill={color} strokeWidth={3} />
-        </AreaChart>
-      </ResponsiveContainer>
+    <div className="flex-grow">
+      <p className="text-slate-400 text-[9px] font-black uppercase tracking-[0.2em] mb-1 leading-none">{label}</p>
+      <div className="flex items-baseline gap-2 flex-wrap">
+        <h3 className="text-2xl font-black text-slate-900 tracking-tighter leading-none">{value}</h3>
+        <span className={`text-[8px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded-lg ${trend.includes('+') || trend === 'STABLE' ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-500'}`}>
+          {trend}
+        </span>
+      </div>
     </div>
   </div>
 );
 
-const TerminalLog = ({ logs }) => {
-  const scrollRef = useRef();
-  useEffect(() => {
-    if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-  }, [logs]);
-
-  return (
-    <div className="bg-slate-950 rounded-[2.5rem] p-6 border border-slate-800 shadow-2xl relative overflow-hidden flex flex-col h-full" style={{ backgroundColor: '#020617' }}>
-      <div className="flex items-center justify-between mb-4 px-2">
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-rose-500" />
-          <div className="w-3 h-3 rounded-full bg-amber-500" />
-          <div className="w-3 h-3 rounded-full bg-emerald-500" />
-        </div>
-        <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest flex items-center gap-2">
-          <RefreshCw size={10} className="animate-spin" /> Stream_Processor.log
-        </p>
-      </div>
-      <div ref={scrollRef} className="flex-grow overflow-y-auto space-y-1 pr-2 font-mono" style={{ scrollbarWidth: 'none' }}>
-        {logs.map((log, i) => (
-          <div key={i} className="text-[10px] leading-relaxed break-all">
-            <span className="text-slate-600 mr-2">[{log.time}]</span>
-            <span className={log.type === 'ERR' ? 'text-rose-500' : log.type === 'WARN' ? 'text-amber-400' : 'text-emerald-400'}>
-              {log.type}
-            </span>
-            <span className="text-slate-300 ml-2">{log.msg}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
 
 function App() {
   const [newsData, setNewsData] = useState([]);
@@ -150,11 +110,6 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('All');
   const [activeTab, setActiveTab] = useState('Analytics Hub');
-  const [logs, setLogs] = useState([
-    { time: '12:00:24', type: 'INF', msg: 'Awaiting Kafka ingress initialization...' },
-    { time: '12:00:26', type: 'INF', msg: 'Cluster node-04 established handshake.' },
-    { time: '12:00:27', type: 'INF', msg: 'Consumer group [ANALYTICS-X] active.' }
-  ]);
 
   const refreshData = async () => {
     try {
@@ -177,27 +132,8 @@ function App() {
   useEffect(() => {
     refreshData();
     const interval = setInterval(refreshData, 3000);
-    const logInterval = setInterval(() => {
-      const types = ['INF', 'INF', 'INF', 'WARN', 'INF', 'ERR'];
-      const msgs = [
-        'Message chunk [A42] validated.',
-        'Partition parity check passed.',
-        'Ingestion spike detected in REGION_US.',
-        'Socket heartbeat latency > 40ms.',
-        'New stream node initialized [N82].',
-        'Checksum mismatch on partition 12.'
-      ];
-      const typeIndex = Math.floor(Math.random() * types.length);
-      setLogs(prev => [...prev.slice(-100), {
-        time: new Date().toLocaleTimeString([], { hour12: false }),
-        type: types[typeIndex],
-        msg: msgs[Math.floor(Math.random() * msgs.length)]
-      }]);
-    }, 2000);
-
     return () => {
       clearInterval(interval);
-      clearInterval(logInterval);
     };
   }, []);
 
@@ -293,33 +229,23 @@ function App() {
       <main className="lg:ml-80 flex-grow p-6 md:p-10 lg:p-14 transition-all">
 
         {/* Header */}
-        <header className="flex flex-col 2xl:flex-row justify-between items-start 2xl:items-center gap-8 mb-16">
-          <div className="flex-grow">
-            <div className="flex items-center gap-4 mb-2 flex-wrap">
-              <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-slate-900">{activeTab}</h2>
-              <div className="flex bg-white px-4 py-2 rounded-2xl border-2 border-slate-200 shadow-sm items-center gap-2">
-                <div className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_10px_#10b981]" />
-                <span className="text-[10px] font-black text-slate-600 uppercase tracking-widest">Active Pipeline</span>
-              </div>
-              {!isLive && <span className="text-[10px] font-black bg-indigo-100 text-indigo-600 px-3 py-1.5 rounded-xl border border-indigo-200 uppercase tracking-widest">Simulated Cluster</span>}
-            </div>
-            <p className="text-slate-400 text-sm font-medium flex items-center gap-3">
-              Authenticated as <span className="text-slate-900 font-bold">cluster_master_04</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-slate-200" />
-              Region <span className="text-indigo-500 font-black">us-east-primary</span>
-            </p>
+        <header className="flex flex-col lg:flex-row justify-between items-center gap-8 mb-16">
+          <div className="flex-shrink-0">
+            <h2 className="text-4xl md:text-5xl font-black tracking-tighter text-slate-900">{activeTab}</h2>
           </div>
 
-          <div className="flex items-center gap-4 w-full 2xl:w-auto">
-            <div className="relative flex-grow 2xl:w-[400px]">
+          <div className="flex items-center gap-6 w-full lg:w-auto flex-grow justify-end">
+            <div className="relative w-full max-w-[500px]">
               <SearchIcon size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
                 type="text"
                 placeholder="Query resources, topics, schemas..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-16 pr-8 py-5 bg-white border-2 border-slate-200 rounded-[2rem] focus:outline-none focus:ring-8 focus:ring-indigo-500/5 focus:border-indigo-500 transition-all font-bold text-sm shadow-2xl shadow-slate-200/50"
               />
             </div>
-            <button className="p-5 bg-white border border-slate-200 rounded-[1.5rem] text-slate-600 hover:bg-slate-50 transition-all shadow-xl relative ring-1 ring-slate-100">
+            <button className="p-5 bg-white border border-slate-200 rounded-[1.5rem] text-slate-600 hover:bg-slate-50 transition-all shadow-xl relative flex-shrink-0">
               <Bell size={24} />
               <div className="absolute top-5 right-5 w-3.5 h-3.5 bg-indigo-500 rounded-full border-4 border-white" />
             </button>
@@ -333,15 +259,12 @@ function App() {
         <div className="grid grid-cols-12 gap-8">
 
           {/* Row 1: KPIs and Live Terminal */}
-          <div className="col-span-12 xl:col-span-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 h-full">
-              <StatCard label="Ingestion Throughput" value={newsData.length} trend="+24.2% / HR" color="#6366f1" icon={Zap} data={TRAFFIC_DATA} />
-              <StatCard label="Pipeline Latency" value={isLive ? '12.4ms' : '0.2ms'} trend="STABLE" color="#ec4899" icon={Activity} data={TRAFFIC_DATA} />
-              <StatCard label="Live Schemas" value={isLive ? '142' : '8'} trend="+12 NEW" color="#f59e0b" icon={Database} data={TRAFFIC_DATA} />
+          <div className="col-span-12 mb-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+              <StatCard label="Ingestion Throughput" value={newsData.length} trend="+24.2% / HR" color="#6366f1" icon={Zap} />
+              <StatCard label="Pipeline Latency" value={isLive ? '12.4ms' : '0.2ms'} trend="STABLE" color="#ec4899" icon={Activity} />
+              <StatCard label="Live Schemas" value={isLive ? '142' : '8'} trend="+12 NEW" color="#f59e0b" icon={Database} />
             </div>
-          </div>
-          <div className="col-span-12 xl:col-span-4 h-full" style={{ minHeight: '300px' }}>
-            <TerminalLog logs={logs} />
           </div>
 
           {/* Row 2: Main Chart and Performance Summary */}
