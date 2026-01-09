@@ -79,70 +79,72 @@ function App() {
   const categories = ['All', ...new Set(newsData.map(item => item.category))];
 
   return (
-    <div className="flex min-h-screen bg-[#f1f5f9] font-outfit text-slate-800">
+    <div className="flex min-h-screen bg-gray-100 font-outfit text-slate-800">
       <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
 
-      <main className="lg:ml-60 flex-grow p-4 md:p-10 lg:p-8 transition-all">
+      <main className="lg:ml-54 flex-grow min-h-screen transition-all flex flex-col rounded-t-xl">
         <Header activeTab={activeTab} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
-        <div className="grid grid-cols-12 gap-8">
-          {activeTab === 'Analytics Hub' && (
-            <>
-              {/* Row 1: KPIs */}
-              <div className="col-span-12 mb-2">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <StatCard label="Ingestion Throughput" value={newsData.length} trend="+24.2% / HR" color="#6366f1" icon={Zap} />
-                  <StatCard label="Pipeline Latency" value={isLive ? '12.4ms' : '0.2ms'} trend="STABLE" color="#ec4899" icon={Activity} />
-                  <StatCard label="Live Schemas" value={isLive ? '142' : '8'} trend="+12 NEW" color="#f59e0b" icon={Database} />
+        <div className="p-4 md:p-8 lg:p-8 max-w-[1600px] mx-auto w-full flex-grow flex flex-col">
+          <div className="grid grid-cols-12 gap-6">
+            {activeTab === 'Analytics Hub' && (
+              <>
+                {/* Row 1: KPIs */}
+                <div className="col-span-12 mb-2">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <StatCard label="Ingestion Throughput" value={newsData.length} trend="+24.2% / HR" color="#6366f1" icon={Zap} />
+                    <StatCard label="Pipeline Latency" value={isLive ? '12.4ms' : '0.2ms'} trend="STABLE" color="#ec4899" icon={Activity} />
+                    <StatCard label="Live Schemas" value={isLive ? '142' : '8'} trend="+12 NEW" color="#f59e0b" icon={Database} />
+                  </div>
+                </div>
+
+                {/* Row 2: Charts */}
+                <div className="col-span-12 flex gap-6">
+                  <ThroughputChart data={TRAFFIC_DATA} />
+                  <SystemHealth />
+                </div>
+
+                {/* Row 4: Ledger */}
+                <LiveLedger
+                  data={filteredData}
+                  categories={categories}
+                  activeCategory={categoryFilter}
+                  setCategory={setCategoryFilter}
+                />
+              </>
+            )}
+
+            {activeTab === 'Geographic Map' && (
+              <GeoDistribution categoryCounts={categoryCounts} totalEvents={newsData.length} />
+            )}
+          </div>
+
+          {/* Footer */}
+          <footer className="mt-auto pt-12 border-t border-slate-200 flex flex-col xl:flex-row justify-between items-center gap-10 select-none pb-8 text-slate-400">
+            <div className="flex items-center gap-8">
+              <div className="flex flex-col">
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] mb-2 opacity-70">Platform Integrity</p>
+                <div className="flex gap-1.5">
+                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(i => <div key={i} className={`w-1.5 h-5 rounded-full ${i > 10 ? 'bg-slate-200 animate-pulse' : 'bg-emerald-400 shadow-[0_0_8px_#10b981]'}`} />)}
                 </div>
               </div>
-
-              {/* Row 2: Charts */}
-              <div className="col-span-12 flex gap-6">
-                <ThroughputChart data={TRAFFIC_DATA} />
-                <SystemHealth />
+              <div className="w-px h-10 bg-slate-200 hidden md:block" />
+              <div className="flex flex-col">
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] mb-1 opacity-70">Global Uptime</p>
+                <p className="text-xl font-black text-indigo-500">99.98% <span className="text-[10px] text-slate-400 ml-1">SLA_OK</span></p>
               </div>
+            </div>
 
-              {/* Row 4: Ledger */}
-              <LiveLedger
-                data={filteredData}
-                categories={categories}
-                activeCategory={categoryFilter}
-                setCategory={setCategoryFilter}
-              />
-            </>
-          )}
-
-          {activeTab === 'Geographic Map' && (
-            <GeoDistribution categoryCounts={categoryCounts} totalEvents={newsData.length} />
-          )}
+            <div className="flex gap-8 items-center opacity-60 hover:opacity-100 transition-opacity">
+              <p className="text-[11px] font-black">© 2026 ANTIGRAVITY SYSTEMS • V.4.0.28-CORE</p>
+              <div className="flex gap-4">
+                <Globe size={16} />
+                <Unplug size={16} />
+                <Lock size={16} />
+              </div>
+            </div>
+          </footer>
         </div>
-
-        {/* Footer */}
-        <footer className="mt-32 pt-16 border-t border-slate-200 flex flex-col xl:flex-row justify-between items-center gap-10 select-none pb-12">
-          <div className="flex items-center gap-8">
-            <div className="flex flex-col">
-              <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">Platform Integrity</p>
-              <div className="flex gap-1.5">
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(i => <div key={i} className={`w-1.5 h-5 rounded-full ${i > 10 ? 'bg-slate-200 animate-pulse' : 'bg-emerald-400 shadow-[0_0_8px_#10b981]'}`} />)}
-              </div>
-            </div>
-            <div className="w-px h-10 bg-slate-200 hidden md:block" />
-            <div className="flex flex-col">
-              <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1">Global Uptime</p>
-              <p className="text-xl font-black text-indigo-500">99.98% <span className="text-[10px] text-slate-400 ml-1">SLA_OK</span></p>
-            </div>
-          </div>
-
-          <div className="flex gap-8 items-center opacity-40 hover:opacity-100 transition-opacity">
-            <p className="text-[11px] font-black text-slate-400">© 2026 ANTIGRAVITY SYSTEMS • V.4.0.28-CORE</p>
-            <div className="flex gap-4">
-              <Globe size={16} />
-              <Unplug size={16} />
-              <Lock size={16} />
-            </div>
-          </div>
-        </footer>
       </main>
 
       <style>
@@ -151,7 +153,7 @@ function App() {
           
           body {
             font-family: 'Outfit', sans-serif;
-            background-color: #f1f5f9;
+            background-color: #ffffff;
             margin: 0;
             overflow-x: hidden;
           }
@@ -161,12 +163,12 @@ function App() {
             height: 10px;
           }
           ::-webkit-scrollbar-track {
-            background: #f1f5f9;
+            background: #ffffff;
           }
           ::-webkit-scrollbar-thumb {
             background: #cbd5e1;
-            border-radius: 10px;
-            border: 3px solid #f1f5f9;
+            border-radius: 5px;
+            border: 2px solid #ffffff;
           }
           ::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
@@ -174,7 +176,7 @@ function App() {
 
           .recharts-cartesian-grid-horizontal line,
           .recharts-cartesian-grid-vertical line {
-            stroke: #f1f5f9;
+            stroke: #e2e8f0;
           }
           
           /* Force charts to respect container */
