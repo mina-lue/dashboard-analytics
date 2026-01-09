@@ -9,7 +9,7 @@ import {
 
 const Sidebar = ({ activeTab, setActiveTab }) => {
     return (
-        <aside className="fixed left-0 top-0 h-screen w-54 bg-gray-200 border-r border-slate-200 hidden lg:flex flex-col p-6 z-50">
+        <aside className="fixed left-0 top-0 h-screen w-54 border-r border-slate-200 hidden lg:flex flex-col p-6 z-50">
             <div className="flex items-center gap-3 mb-10 px-2">
                 <div className="w-8 h-8 bg-slate-900 rounded-md flex items-center justify-center">
                     <Zap size={18} className="text-white fill-current" />
@@ -42,15 +42,7 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
                 </div>
             </nav>
 
-            <div className="mt-auto pt-6 border-t border-slate-100">
-                <div className="bg-slate-50 rounded-lg p-4 border border-slate-100">
-                    <h4 className="font-semibold text-sm mb-1 text-slate-900">Get Pro</h4>
-                    <p className="text-xs text-slate-500 mb-4 leading-relaxed">Unlock lifetime access to all dashboards and components.</p>
-                    <button className="w-full bg-slate-900 text-white py-2 rounded-md text-xs font-medium hover:bg-slate-800 transition-colors">
-                        Unlock Pro
-                    </button>
-                </div>
-            </div>
+
         </aside>
     );
 };

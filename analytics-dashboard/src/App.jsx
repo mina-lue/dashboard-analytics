@@ -79,10 +79,10 @@ function App() {
   const categories = ['All', ...new Set(newsData.map(item => item.category))];
 
   return (
-    <div className="flex min-h-screen bg-gray-100 font-outfit text-slate-800">
+    <div className="flex min-h-screen bg-gray-200 font-outfit text-slate-800">
       <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
 
-      <main className="lg:ml-54 flex-grow min-h-screen transition-all flex flex-col rounded-t-xl">
+      <main className="lg:ml-54  bg-gray-100 flex-grow min-h-screen transition-all flex flex-col rounded-t-xl">
         <Header activeTab={activeTab} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
         <div className="p-4 md:p-8 lg:p-8 max-w-[1600px] mx-auto w-full flex-grow flex flex-col">
