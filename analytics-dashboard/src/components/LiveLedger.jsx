@@ -3,14 +3,14 @@ import { Terminal, ChevronRight, ArrowUpRight } from 'lucide-react';
 
 const LiveLedger = ({ data, categories, activeCategory, setCategory }) => {
     return (
-        <div className="col-span-12 bg-white rounded-[5rem] border-2 border-slate-200 overflow-hidden shadow-2xl relative mt-8">
-            <div className="p-10 md:p-14 border-b border-slate-100 flex flex-col 2xl:flex-row justify-between items-start 2xl:items-center gap-12 bg-slate-50/50">
+        <div className="col-span-12 bg-white rounded-xl border-2 border-slate-200 overflow-hidden shadow-2xl relative mt-2">
+            <div className="p-4 border-b border-slate-100 flex flex-col 2xl:flex-row justify-between items-start 2xl:items-center gap-12 bg-slate-50/50">
                 <div className="flex gap-6 items-center">
-                    <div className="w-20 h-20 bg-indigo-600 rounded-[2.5rem] flex items-center justify-center text-white shadow-2xl shadow-indigo-600/30">
-                        <Terminal size={32} />
+                    <div className="w-10 h-10 bg-indigo-600 rounded-[2.5rem] flex items-center justify-center text-white shadow-2xl shadow-indigo-600/30">
+                        <Terminal size={24} />
                     </div>
                     <div>
-                        <h3 className="text-4xl font-black text-slate-900 tracking-tighter leading-none mb-3">Live Platform Ledger</h3>
+                        <h3 className="text-xl font-semibold text-slate-900 tracking-tighter leading-none mb-3">Live Platform Ledger</h3>
                         <p className="text-slate-500 font-bold flex items-center gap-2 text-sm">
                             Master partition <span className="text-indigo-600 font-black">X-OFFSET_241</span>
                             <span className="w-1.5 h-1.5 rounded-full bg-slate-300" />
@@ -19,12 +19,12 @@ const LiveLedger = ({ data, categories, activeCategory, setCategory }) => {
                     </div>
                 </div>
 
-                <div className="flex bg-white p-3 rounded-[2.5rem] shadow-2xl border border-slate-200 gap-2">
+                <div className="flex bg-white p-2 rounded-xl shadow-2xl border border-slate-200 gap-2 items-center">
                     {categories.map(cat => (
                         <button
                             key={cat}
                             onClick={() => setCategory(cat)}
-                            className={`px-8 py-4 rounded-[1.8rem] text-[11px] font-black tracking-widest transition-all ${activeCategory === cat ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-600/40 -translate-y-1' : 'text-slate-400 hover:bg-slate-50'
+                            className={`px-2 py-1 rounded-xl text-[11px] font-black tracking-widest transition-all ${activeCategory === cat ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-600/40 ' : 'text-slate-400 hover:bg-slate-50'
                                 }`}
                         >
                             {cat.toUpperCase()}

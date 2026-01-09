@@ -86,31 +86,36 @@ function App() {
         <Header activeTab={activeTab} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
         <div className="grid grid-cols-12 gap-8">
-          {/* Row 1: KPIs */}
-          <div className="col-span-12 mb-2">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <StatCard label="Ingestion Throughput" value={newsData.length} trend="+24.2% / HR" color="#6366f1" icon={Zap} />
-              <StatCard label="Pipeline Latency" value={isLive ? '12.4ms' : '0.2ms'} trend="STABLE" color="#ec4899" icon={Activity} />
-              <StatCard label="Live Schemas" value={isLive ? '142' : '8'} trend="+12 NEW" color="#f59e0b" icon={Database} />
-            </div>
-          </div>
+          {activeTab === 'Analytics Hub' && (
+            <>
+              {/* Row 1: KPIs */}
+              <div className="col-span-12 mb-2">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <StatCard label="Ingestion Throughput" value={newsData.length} trend="+24.2% / HR" color="#6366f1" icon={Zap} />
+                  <StatCard label="Pipeline Latency" value={isLive ? '12.4ms' : '0.2ms'} trend="STABLE" color="#ec4899" icon={Activity} />
+                  <StatCard label="Live Schemas" value={isLive ? '142' : '8'} trend="+12 NEW" color="#f59e0b" icon={Database} />
+                </div>
+              </div>
 
-          {/* Row 2: Charts */}
-          <div className="col-span-12 flex gap-6">
-            <ThroughputChart data={TRAFFIC_DATA} />
-            <SystemHealth />
-          </div>
+              {/* Row 2: Charts */}
+              <div className="col-span-12 flex gap-6">
+                <ThroughputChart data={TRAFFIC_DATA} />
+                <SystemHealth />
+              </div>
 
-          {/* Row 3: Geo & Category */}
-          <GeoDistribution categoryCounts={categoryCounts} totalEvents={newsData.length} />
+              {/* Row 4: Ledger */}
+              <LiveLedger
+                data={filteredData}
+                categories={categories}
+                activeCategory={categoryFilter}
+                setCategory={setCategoryFilter}
+              />
+            </>
+          )}
 
-          {/* Row 4: Ledger */}
-          <LiveLedger
-            data={filteredData}
-            categories={categories}
-            activeCategory={categoryFilter}
-            setCategory={setCategoryFilter}
-          />
+          {activeTab === 'Geographic Map' && (
+            <GeoDistribution categoryCounts={categoryCounts} totalEvents={newsData.length} />
+          )}
         </div>
 
         {/* Footer */}
