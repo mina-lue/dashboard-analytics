@@ -408,8 +408,23 @@ setPreviousDataLength(newsData.length);
                     />
                   </div>
                 </div>
+              </>
+            )}
 
-                {/* Row 3: Ledger */}
+            {activeTab === 'Live Pipeline' && (
+              <>
+                {/* Summary Panel for Live Pipeline */}
+                <div className="col-span-12 mb-4">
+                  <SummaryPanel
+                    lastUpdated={lastUpdated}
+                    isLive={isLive}
+                    totalEvents={analyticsStats?.totalEvents || newsData.length}
+                    eventsLastHour={analyticsStats?.eventsLastHour}
+                    isRefreshing={isRefreshing}
+                  />
+                </div>
+
+                {/* Live Ledger - Main Content */}
                 <LiveLedger
                   data={filteredData}
                   categories={categories}
