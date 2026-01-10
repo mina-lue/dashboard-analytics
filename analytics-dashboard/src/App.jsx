@@ -34,13 +34,20 @@ function App() {
   const refreshData = async () => {
     try {
       const startTime = performance.now();
-      const res = await axios.get('http://localhost:9081/api/news?size=100');
+      // Request with sort parameter to get newest items first
+      const res = await axios.get('http://localhost:9081/api/news?size=100&sort=datetime,desc');
       const endTime = performance.now();
       const latency = Math.round((endTime - startTime) * 10) / 10; // Round to 1 decimal place
       setPipelineLatency(latency);
       
       if (res.data.content && res.data.content.length > 0) {
-        setNewsData(res.data.content);
+        // Sort by datetime descending to ensure newest first (in case API doesn't sort)
+        const sortedData = [...res.data.content].sort((a, b) => {
+          const dateA = a.datetime ? new Date(a.datetime).getTime() : 0;
+          const dateB = b.datetime ? new Date(b.datetime).getTime() : 0;
+          return dateB - dateA; // Descending order (newest first)
+        });
+        setNewsData(sortedData);
         setIsLive(true);
       } else {
         setNewsData(SAMPLE_DATA);
@@ -64,10 +71,19 @@ function App() {
   }, []);
 
   const filteredData = useMemo(() => {
-    return newsData.filter(item =>
+    const filtered = newsData.filter(item =>
       (categoryFilter === 'All' || item.category === categoryFilter) &&
       (item.title.toLowerCase().includes(searchQuery.toLowerCase()))
     );
+    
+    // Sort by datetime descending (newest first) - ensure newest items appear at top
+    const sorted = filtered.sort((a, b) => {
+      const dateA = a.datetime ? new Date(a.datetime).getTime() : 0;
+      const dateB = b.datetime ? new Date(b.datetime).getTime() : 0;
+      return dateB - dateA; // Descending order (newest first)
+    });
+    
+    return sorted;
   }, [newsData, searchQuery, categoryFilter]);
 
   const categoryCounts = useMemo(() => {
