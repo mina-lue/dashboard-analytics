@@ -18,7 +18,7 @@ public class NewsService {
         return newsRepository.findById(id).orElseThrow(() -> new NewsNotFoundException(id));
     }
 
-    @Cacheable(cacheNames = "news-page", key = "#pageable.pageNumber + '-' + #pageable.pageSize")
+    // Removed @Cacheable to ensure real-time data updates for the dashboard
     public Page<News> listAllNewsByPage(Pageable pageable) {
         return newsRepository.findAll(pageable);
     }

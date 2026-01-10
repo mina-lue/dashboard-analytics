@@ -12,9 +12,9 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
         <aside className="fixed left-0 top-0 h-screen w-54 border-r border-slate-200 hidden lg:flex flex-col p-6 z-50">
             <div className="flex items-center gap-3 mb-10 px-2">
                 <div className="w-8 h-8 bg-slate-900 rounded-md flex items-center justify-center">
-                    <Zap size={18} className="text-white fill-current" />
+                    <Zap size={14} className="text-white fill-current" />
                 </div>
-                <span className="font-bold text-lg tracking-tight text-slate-900">Shadcn UI Kit</span>
+                <span className="font-bold text-md tracking-tight text-slate-900">BIT Dashboard</span>
             </div>
 
             <nav className="flex-grow space-y-8">

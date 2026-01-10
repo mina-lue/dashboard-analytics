@@ -28,10 +28,17 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('All');
   const [activeTab, setActiveTab] = useState('Analytics Hub');
+  const [pipelineLatency, setPipelineLatency] = useState(0);
+  const [previousDataLength, setPreviousDataLength] = useState(0);
 
   const refreshData = async () => {
     try {
+      const startTime = performance.now();
       const res = await axios.get('http://localhost:9081/api/news?size=100');
+      const endTime = performance.now();
+      const latency = Math.round((endTime - startTime) * 10) / 10; // Round to 1 decimal place
+      setPipelineLatency(latency);
+      
       if (res.data.content && res.data.content.length > 0) {
         setNewsData(res.data.content);
         setIsLive(true);
@@ -44,6 +51,7 @@ function App() {
       setNewsData(SAMPLE_DATA);
       setIsLive(false);
       setLoading(false);
+      setPipelineLatency(0);
     }
   };
 
@@ -78,6 +86,83 @@ function App() {
 
   const categories = ['All', ...new Set(newsData.map(item => item.category))];
 
+  // Calculate ingestion throughput (items per hour)
+  // This represents the rate at which news items are being ingested into the system
+  // Producer API generates news every 5 seconds = 720 items/hour theoretically
+  const ingestionThroughput = useMemo(() => {
+    if (!isLive || newsData.length === 0) return 0;
+    
+    // Get all items with valid datetime, sorted by newest first
+    const itemsWithDate = newsData
+      .filter(item => item.datetime)
+      .map(item => new Date(item.datetime).getTime())
+      .filter(ts => !isNaN(ts))
+      .sort((a, b) => b - a); // Sort newest first
+    
+    if (itemsWithDate.length === 0) {
+      // No valid dates - fallback to showing total count
+      return newsData.length;
+    }
+    
+    // Check items from the last hour
+    const oneHourAgo = Date.now() - (60 * 60 * 1000);
+    const recentItems = itemsWithDate.filter(ts => ts >= oneHourAgo);
+    
+    if (recentItems.length > 0) {
+      // Calculate actual rate based on items in the last hour
+      return recentItems.length; // Items in last hour = items/hour
+    } else {
+      // No items from last hour - estimate from recent items
+      // Use the 10 most recent items to estimate rate
+      const sampleSize = Math.min(10, itemsWithDate.length);
+      const sampleItems = itemsWithDate.slice(0, sampleSize);
+      
+      if (sampleItems.length < 2) {
+        // Not enough data - return total as estimate
+        return newsData.length;
+      }
+      
+      // Calculate time span of sample
+      const oldestSample = sampleItems[sampleItems.length - 1];
+      const newestSample = sampleItems[0];
+      const timeSpanMs = Math.max(newestSample - oldestSample, 300000); // At least 5 minutes
+      const timeSpanHours = timeSpanMs / (60 * 60 * 1000);
+      
+      // Estimate hourly rate from sample
+      const estimatedRate = sampleItems.length / timeSpanHours;
+      
+      // Producer API generates every 5 seconds = 720 items/hour maximum
+      // Return a reasonable estimate (cap at 720)
+      return Math.min(Math.round(estimatedRate), 720);
+    }
+  }, [newsData, isLive]);
+
+  // Calculate unique schemas (categories) from actual data
+  const liveSchemas = useMemo(() => {
+    if (!isLive || newsData.length === 0) return 8; // Default fallback
+    const uniqueCategories = new Set(newsData.map(item => item.category).filter(Boolean));
+    return uniqueCategories.size;
+  }, [newsData, isLive]);
+
+  // Calculate trend for ingestion throughput
+  const throughputTrend = useMemo(() => {
+    if (!isLive) return '0% / HR';
+    const currentLength = newsData.length;
+    if (previousDataLength === 0) {
+      return '+0% / HR';
+    }
+    const change = ((currentLength - previousDataLength) / previousDataLength) * 100;
+    const sign = change >= 0 ? '+' : '';
+    return `${sign}${Math.round(change * 10) / 10}% / HR`;
+  }, [newsData.length, previousDataLength, isLive]);
+
+  // Update previous data length for trend calculation
+  useEffect(() => {
+    if (isLive && newsData.length > 0) {
+      setPreviousDataLength(newsData.length);
+    }
+  }, [newsData.length, isLive]);
+
   return (
     <div className="flex min-h-screen bg-gray-200 font-outfit text-slate-800">
       <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
@@ -92,9 +177,9 @@ function App() {
                 {/* Row 1: KPIs */}
                 <div className="col-span-12 mb-2">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <StatCard label="Ingestion Throughput" value={newsData.length} trend="+24.2% / HR" color="#6366f1" icon={Zap} />
-                    <StatCard label="Pipeline Latency" value={isLive ? '12.4ms' : '0.2ms'} trend="STABLE" color="#ec4899" icon={Activity} />
-                    <StatCard label="Live Schemas" value={isLive ? '142' : '8'} trend="+12 NEW" color="#f59e0b" icon={Database} />
+                    <StatCard label="Ingestion Throughput" value={ingestionThroughput} trend={throughputTrend} color="#6366f1" icon={Zap} />
+                    <StatCard label="Pipeline Latency" value={isLive ? `${pipelineLatency}ms` : '0.2ms'} trend="STABLE" color="#ec4899" icon={Activity} />
+                    <StatCard label="Live Schemas" value={isLive ? liveSchemas.toString() : '8'} trend={isLive && newsData.length > previousDataLength ? `+${Math.max(0, newsData.length - previousDataLength)} NEW` : '+0 NEW'} color="#f59e0b" icon={Database} />
                   </div>
                 </div>
 
