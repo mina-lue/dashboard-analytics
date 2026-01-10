@@ -4,9 +4,7 @@ import {
   Zap,
   Activity,
   Database,
-  Globe,
-  Unplug,
-  Lock
+  Globe
 } from 'lucide-react';
 
 // Data
@@ -438,32 +436,6 @@ setPreviousDataLength(newsData.length);
               <GeoDistribution categoryCounts={categoryCounts} totalEvents={newsData.length} />
             )}
           </div>
-
-          {/* Footer */}
-          <footer className="mt-auto pt-12 border-t border-slate-200 flex flex-col xl:flex-row justify-between items-center gap-10 select-none pb-8 text-slate-400">
-            <div className="flex items-center gap-8">
-              <div className="flex flex-col">
-                <p className="text-[10px] font-black uppercase tracking-[0.2em] mb-2 opacity-70">Platform Integrity</p>
-                <div className="flex gap-1.5">
-                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(i => <div key={i} className={`w-1.5 h-5 rounded-full ${i > 10 ? 'bg-slate-200 animate-pulse' : 'bg-emerald-400 shadow-[0_0_8px_#10b981]'}`} />)}
-                </div>
-              </div>
-              <div className="w-px h-10 bg-slate-200 hidden md:block" />
-              <div className="flex flex-col">
-                <p className="text-[10px] font-black uppercase tracking-[0.2em] mb-1 opacity-70">Global Uptime</p>
-                <p className="text-xl font-black text-indigo-500">99.98% <span className="text-[10px] text-slate-400 ml-1">SLA_OK</span></p>
-              </div>
-            </div>
-
-            <div className="flex gap-8 items-center opacity-60 hover:opacity-100 transition-opacity">
-              <p className="text-[11px] font-black">© 2026 ANTIGRAVITY SYSTEMS • V.4.0.28-CORE</p>
-              <div className="flex gap-4">
-                <Globe size={16} />
-                <Unplug size={16} />
-                <Lock size={16} />
-              </div>
-            </div>
-          </footer>
         </div>
       </main>
 
