@@ -10,14 +10,14 @@ Follow these steps to get the entire engine running locally.
 ## 2. Start Infrastructure
 Navigate to the backend directory and start the core services:
 ```bash
-cd spring-cloud-stream-kafka-elasticsearch
+cd analytics-dashboard-api
 docker-compose up -d
 ```
 *Wait for Kafka, Elasticsearch, and Redis to be healthy.*
 
 ## 3. Start Backend Services
 Launch the microservices in this order (using separate terminals or background):
-1. **Eureka Server**: `cd eureka-server && ./mvnw spring-boot:run`
+1. **Eureka Server**: `cd news-server && ./mvnw spring-boot:run`
 2. **Producer API**: `cd producer-api && ./mvnw spring-boot:run`
 3. **Categorizer**: `cd categorizer-service && ./mvnw spring-boot:run`
 4. **Collector**: `cd collector-service && ./mvnw spring-boot:run`
