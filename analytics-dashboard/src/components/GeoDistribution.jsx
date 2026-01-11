@@ -259,53 +259,6 @@ const GeoDistribution = ({ categoryCounts, totalEvents, analyticsStats, eventsLa
                     </div>
                 </div>
             </div>
-
-            {/* Category Bar Chart */}
-            <div className="bg-white rounded-lg border border-slate-200 shadow-sm p-6">
-                <div className="flex items-center justify-between mb-6">
-                    <div>
-                        <h3 className="text-lg font-semibold text-slate-900">Category Volume Analysis</h3>
-                        <p className="text-xs text-slate-500 mt-1">Events by category</p>
-                    </div>
-                </div>
-                <div className="h-80" style={{ minHeight: '320px' }}>
-                    <ResponsiveContainer width="100%" height="100%">
-                        <BarChart data={sortedCategoryData} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
-                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                            <XAxis 
-                                dataKey="name" 
-                                axisLine={false}
-                                tickLine={false}
-                                tick={{ fill: '#475569', fontSize: 11, fontWeight: 500 }}
-                                angle={-30}
-                                textAnchor="end"
-                                height={80}
-                            />
-                            <YAxis 
-                                axisLine={false}
-                                tickLine={false}
-                                tick={{ fill: '#475569', fontSize: 11, fontWeight: 500 }}
-                                dx={-5}
-                            />
-                            <RechartsTooltip content={<CustomTooltip />} cursor={{ fill: '#f1f5f9' }} />
-                            <Legend 
-                                wrapperStyle={{ paddingTop: '10px' }}
-                                formatter={(value) => <span style={{ color: '#475569', fontSize: '12px', fontWeight: 500 }}>{value}</span>}
-                                iconSize={12}
-                            />
-                            <Bar 
-                                dataKey="value" 
-                                radius={[4, 4, 0, 0]} 
-                                name="Events"
-                            >
-                                {sortedCategoryData.map((entry, index) => (
-                                    <Cell key={`bar-cell-${index}`} fill={entry.fill} />
-                                ))}
-                            </Bar>
-                        </BarChart>
-                    </ResponsiveContainer>
-                </div>
-            </div>
         </div>
     );
 };

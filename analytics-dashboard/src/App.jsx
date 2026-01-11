@@ -400,10 +400,10 @@ setPreviousDataLength(newsData.length);
               </>
             )}
 
-            {activeTab === 'Live Pipeline' && (
+            {activeTab === 'Pipeline' && (
               <>
                 {/* Summary Panel for Live Pipeline */}
-                <div className="col-span-12 mb-4">
+                <div className="col-span-12 mb-2">
                   <SummaryPanel
                     lastUpdated={lastUpdated}
                     isLive={isLive}
