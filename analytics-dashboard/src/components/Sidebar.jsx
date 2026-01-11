@@ -23,9 +23,8 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
                     <ul className="space-y-1">
                         {[
                             { text: 'Analytics Hub', icon: <LayoutDashboard size={18} /> },
-                            { text: 'Live Pipeline', icon: <Radio size={18} />, badge: 'LIVE' },
+                            { text: 'Pipeline', icon: <Radio size={18} />, badge: 'LIVE' },
                             { text: 'Geographic Map', icon: <Globe size={18} /> },
-                            { text: 'Topic Registry', icon: <Database size={18} /> },
                         ].map((item) => (
                             <li key={item.text} onClick={() => setActiveTab(item.text)}>
                                 <button className={`w-full flex items-center gap-3 px-3 py-2 rounded-md transition-colors text-sm font-medium ${activeTab === item.text
