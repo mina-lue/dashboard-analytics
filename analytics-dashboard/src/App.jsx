@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import axios from 'axios';
 import {
   Zap,
@@ -34,27 +34,39 @@ function App() {
   const [lastUpdated, setLastUpdated] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const refreshData = async () => {
+  const refreshData = useCallback(async () => {
     setIsRefreshing(true);
     try {
       const startTime = performance.now();
-      
-      // Fetch news data and analytics in parallel
-      const [newsRes, analyticsRes] = await Promise.all([
-        axios.get('http://localhost:9081/api/news?size=100&sort=datetime,desc'),
-        axios.get('http://localhost:9081/api/analytics/stats').catch(() => null) // Analytics is optional, don't fail if unavailable
-      ]);
-      
+
+      // Use search API if searchQuery exists, otherwise use regular news endpoint
+      let newsRes;
+      if (searchQuery.trim()) {
+        // Use backend Elasticsearch search API
+        newsRes = await axios.put(
+          'http://localhost:9081/api/news/search?size=100&sort=datetime,desc',
+          { text: searchQuery.trim() }
+        );
+      } else {
+        // Use regular news endpoint
+        newsRes = await axios.get('http://localhost:9081/api/news?size=100&sort=datetime,desc');
+      }
+
+      // Fetch analytics stats (only when not searching)
+      const analyticsRes = !searchQuery.trim()
+        ? await axios.get('http://localhost:9081/api/analytics/stats').catch(() => null)
+        : null;
+
       const endTime = performance.now();
       const latency = Math.round((endTime - startTime) * 10) / 10; // Round to 1 decimal place
       setPipelineLatency(latency);
       setLastUpdated(Date.now());
-      
-      // Update analytics stats if available
+
+      // Update analytics stats if available (skip when searching)
       if (analyticsRes && analyticsRes.data) {
         setAnalyticsStats(analyticsRes.data);
       }
-      
+
       if (newsRes.data.content && newsRes.data.content.length > 0) {
         // Sort by datetime descending to ensure newest first (in case API doesn't sort)
         const sortedData = [...newsRes.data.content].sort((a, b) => {
@@ -65,44 +77,55 @@ function App() {
         setNewsData(sortedData);
         setIsLive(true);
       } else {
-        setNewsData(SAMPLE_DATA);
+        setNewsData(searchQuery.trim() ? [] : SAMPLE_DATA);
         setIsLive(false);
       }
       setLoading(false);
     } catch (err) {
       console.error('Error fetching data:', err);
-      setNewsData(SAMPLE_DATA);
+      setNewsData(searchQuery.trim() ? [] : SAMPLE_DATA);
       setIsLive(false);
       setLoading(false);
       setPipelineLatency(0);
     } finally {
       setIsRefreshing(false);
     }
-  };
+  }, [searchQuery]);
+
+  // Auto-switch to Pipeline tab when search is initiated
+  useEffect(() => {
+    if (searchQuery.trim() && activeTab !== 'Pipeline') {
+      setActiveTab('Pipeline');
+    }
+  }, [searchQuery, activeTab]);
 
   useEffect(() => {
     refreshData();
-    const interval = setInterval(refreshData, 3000);
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
+    // Only auto-refresh every 3 seconds when not searching
+    if (!searchQuery.trim()) {
+      const interval = setInterval(refreshData, 3000);
+      return () => {
+        clearInterval(interval);
+      };
+    }
+  }, [refreshData, searchQuery]); // Refresh when search query changes
 
   const filteredData = useMemo(() => {
+    // If searching, newsData already contains search results from Elasticsearch
+    // Just apply category filter if needed
     const filtered = newsData.filter(item =>
-      (categoryFilter === 'All' || item.category === categoryFilter) &&
-      (item.title.toLowerCase().includes(searchQuery.toLowerCase()))
+      categoryFilter === 'All' || item.category === categoryFilter
     );
-    
+
     // Sort by datetime descending (newest first) - ensure newest items appear at top
     const sorted = filtered.sort((a, b) => {
       const dateA = a.datetime ? new Date(a.datetime).getTime() : 0;
       const dateB = b.datetime ? new Date(b.datetime).getTime() : 0;
       return dateB - dateA; // Descending order (newest first)
     });
-    
+
     return sorted;
-  }, [newsData, searchQuery, categoryFilter]);
+  }, [newsData, categoryFilter]);
 
   const categoryCounts = useMemo(() => {
     const counts = newsData.reduce((acc, item) => {
@@ -127,46 +150,46 @@ function App() {
     if (analyticsStats && analyticsStats.ingestionThroughput) {
       return Math.round(analyticsStats.ingestionThroughput);
     }
-    
+
     // Fallback to frontend calculation if backend analytics not available
     if (!isLive || newsData.length === 0) return 0;
-    
+
     // Get all items with valid datetime, sorted by newest first
     const itemsWithDate = newsData
       .filter(item => item.datetime)
       .map(item => new Date(item.datetime).getTime())
       .filter(ts => !isNaN(ts))
       .sort((a, b) => b - a); // Sort newest first (newest first)
-    
+
     if (itemsWithDate.length === 0) {
       return 0;
     }
-    
+
     const now = Date.now();
     const oneHourAgo = now - (60 * 60 * 1000);
-    
+
     // Filter items from the last hour
     const recentItems = itemsWithDate.filter(ts => ts >= oneHourAgo);
-    
+
     if (recentItems.length === 0) {
       // No items from the last hour - calculate rate from available items
       if (itemsWithDate.length < 2) {
         return 0;
       }
-      
+
       // Use the time span between oldest and newest item to calculate rate
       const newestTime = itemsWithDate[0];
       const oldestTime = itemsWithDate[itemsWithDate.length - 1];
       const timeSpanMs = Math.max(newestTime - oldestTime, 60000); // At least 1 minute
       const timeSpanHours = timeSpanMs / (60 * 60 * 1000);
-      
+
       if (timeSpanHours <= 0) return 0;
-      
+
       // Calculate rate: total items / time span in hours
       const rate = itemsWithDate.length / timeSpanHours;
       return Math.round(rate);
     }
-    
+
     // If we have exactly 100 items (page size limit) and they're all recent,
     // we might be hitting the page limit, so we need to estimate more accurately
     if (recentItems.length === 100 && newsData.length === 100) {
@@ -175,20 +198,20 @@ function App() {
       const oldestTime = recentItems[recentItems.length - 1];
       const timeSpanMs = Math.max(newestTime - oldestTime, 60000); // At least 1 minute
       const timeSpanHours = timeSpanMs / (60 * 60 * 1000);
-      
+
       if (timeSpanHours <= 0) {
         // All items have same/similar timestamp - assume they're from recent period
         // Estimate based on minimum time span (1 minute = 0.0167 hours)
         return Math.round(100 / 0.0167); // This will cap at 720 anyway
       }
-      
+
       // Calculate actual rate based on time span
       const rate = recentItems.length / timeSpanHours;
-      
+
       // Cap at theoretical maximum (720 items/hour = 1 every 5 seconds)
       return Math.min(Math.round(rate), 720);
     }
-    
+
     // Normal case: items from last hour, but less than page limit
     // Use time span to calculate accurate rate
     if (recentItems.length >= 2) {
@@ -196,13 +219,13 @@ function App() {
       const oldestTime = recentItems[recentItems.length - 1];
       const timeSpanMs = Math.max(newestTime - oldestTime, 60000); // At least 1 minute
       const timeSpanHours = timeSpanMs / (60 * 60 * 1000);
-      
+
       if (timeSpanHours > 0) {
         const rate = recentItems.length / timeSpanHours;
         return Math.min(Math.round(rate), 720);
       }
     }
-    
+
     // Fallback: if only 1 item or can't calculate time span, use count
     // But extrapolate to hourly rate if it's within last hour
     if (recentItems.length === 1) {
@@ -211,7 +234,7 @@ function App() {
         return Math.round(1 / itemAge); // Extrapolate to hourly rate
       }
     }
-    
+
     return recentItems.length;
   }, [newsData, isLive, analyticsStats]);
 
@@ -222,7 +245,7 @@ function App() {
     if (analyticsStats && analyticsStats.uniqueCategories) {
       return analyticsStats.uniqueCategories;
     }
-    
+
     // Fallback to frontend calculation
     if (!isLive || newsData.length === 0) return 8; // Default fallback
     const uniqueCategories = new Set(newsData.map(item => item.category).filter(Boolean));
@@ -252,7 +275,7 @@ function App() {
     const now = new Date();
     const hoursAgo = 24; // Show last 24 hours
     const buckets = {};
-    
+
     // Initialize buckets for the last 24 hours (7 representative hours)
     const hourLabels = ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '23:59'];
     hourLabels.forEach(hour => {
@@ -268,14 +291,14 @@ function App() {
     // Process news items and assign to nearest bucket
     newsData.forEach(item => {
       if (!item.datetime) return;
-      
+
       const itemDate = new Date(item.datetime);
       const itemHour = itemDate.getHours();
-      
+
       // Find the nearest bucket hour
       let nearestHour = hourLabels[0];
       let minDiff = Math.abs(itemHour - parseInt(nearestHour.split(':')[0]));
-      
+
       hourLabels.forEach(hour => {
         const hourValue = parseInt(hour.split(':')[0]);
         const diff = Math.abs(itemHour - hourValue);
@@ -284,7 +307,7 @@ function App() {
           nearestHour = hour;
         }
       });
-      
+
       if (buckets[nearestHour]) {
         buckets[nearestHour].events += 1;
         buckets[nearestHour].timestamps.push(itemDate.getTime());
@@ -298,7 +321,7 @@ function App() {
         // Add some variation based on bucket size
         const baseLatency = Math.round(pipelineLatency / 100); // Convert ms to approximate scale (0-20 range)
         bucket.latency = Math.max(10, Math.min(25, baseLatency + (bucket.events > 50 ? 5 : 0)));
-        
+
         // Throughput = events per hour (events count in this bucket)
         bucket.throughput = bucket.events;
       } else {
@@ -322,7 +345,7 @@ function App() {
   // Update previous data length for trend calculation
   useEffect(() => {
     if (isLive && newsData.length > 0) {
-setPreviousDataLength(newsData.length);
+      setPreviousDataLength(newsData.length);
     }
   }, [newsData.length, isLive]);
 
@@ -337,40 +360,40 @@ setPreviousDataLength(newsData.length);
           <div className="grid grid-cols-12 gap-6 min-h-0 flex-1 w-full">
             {activeTab === 'Analytics Hub' && (
               <>
-                
+
 
                 {/* Row 1: KPIs */}
                 <div className="col-span-12 mb-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <StatCard 
-                      label="Ingestion Throughput" 
-                      value={ingestionThroughput} 
-                      trend={throughputTrend} 
-                      color="#6366f1" 
+                    <StatCard
+                      label="Ingestion Throughput"
+                      value={ingestionThroughput}
+                      trend={throughputTrend}
+                      color="#6366f1"
                       icon={Zap}
                       description="Events processed per hour"
                     />
-                    <StatCard 
-                      label="Pipeline Latency" 
-                      value={isLive ? `${pipelineLatency}ms` : '0.2ms'} 
-                      trend={pipelineLatency < 100 ? 'STABLE' : pipelineLatency < 300 ? 'WARNING' : 'HIGH'} 
-                      color="#ec4899" 
+                    <StatCard
+                      label="Pipeline Latency"
+                      value={isLive ? `${pipelineLatency}ms` : '0.2ms'}
+                      trend={pipelineLatency < 100 ? 'STABLE' : pipelineLatency < 300 ? 'WARNING' : 'HIGH'}
+                      color="#ec4899"
                       icon={Activity}
                       description="API response time"
                     />
-                    <StatCard 
-                      label="Live Schemas" 
-                      value={isLive ? liveSchemas.toString() : '8'} 
-                      trend={isLive && newsData.length > previousDataLength ? `+${Math.max(0, newsData.length - previousDataLength)} NEW` : '+0 NEW'} 
-                      color="#f59e0b" 
+                    <StatCard
+                      label="Live Schemas"
+                      value={isLive ? liveSchemas.toString() : '8'}
+                      trend={isLive && newsData.length > previousDataLength ? `+${Math.max(0, newsData.length - previousDataLength)} NEW` : '+0 NEW'}
+                      color="#f59e0b"
                       icon={Database}
                       description="Active category types"
                     />
-                    <StatCard 
-                      label="Total Events" 
-                      value={analyticsStats?.totalEvents?.toLocaleString() || newsData.length.toLocaleString()} 
-                      trend={`${analyticsStats?.eventsLastHour || 0} /HR`} 
-                      color="#10b981" 
+                    <StatCard
+                      label="Total Events"
+                      value={analyticsStats?.totalEvents?.toLocaleString() || newsData.length.toLocaleString()}
+                      trend={`${analyticsStats?.eventsLastHour || 0} /HR`}
+                      color="#10b981"
                       icon={Globe}
                       description="All-time processed events"
                     />
@@ -383,7 +406,7 @@ setPreviousDataLength(newsData.length);
                     <ThroughputChart data={throughputChartData} />
                   </div>
                   <div className="min-w-0 w-full overflow-hidden">
-                    <CategoryBreakdown 
+                    <CategoryBreakdown
                       categoryDistribution={analyticsStats?.categoryDistribution}
                       totalEvents={analyticsStats?.totalEvents || newsData.length}
                     />
@@ -424,8 +447,8 @@ setPreviousDataLength(newsData.length);
             )}
 
             {activeTab === 'Geographic Map' && (
-              <GeoDistribution 
-                categoryCounts={categoryCounts} 
+              <GeoDistribution
+                categoryCounts={categoryCounts}
                 totalEvents={analyticsStats?.totalEvents || newsData.length}
                 analyticsStats={analyticsStats}
                 eventsLastHour={analyticsStats?.eventsLastHour || 0}
