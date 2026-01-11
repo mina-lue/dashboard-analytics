@@ -1,5 +1,5 @@
 {
-	"namespace": "com.ivanfranchin.commonsnews.avro",
+	"namespace": "com.bit.commonsnews.avro",
 	"type": "record",
 	"name": "NewsEvent",
 	"fields": [

@@ -3,8 +3,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.ivanfranchin</groupId>
-        <artifactId>spring-cloud-stream-kafka-elasticsearch</artifactId>
+        <groupId>com.bit</groupId>
+        <artifactId>news-analytics-dashboard</artifactId>
         <version>1.0.0</version>
         <relativePath>../pom.xml</relativePath> <!-- lookup parent from repository -->
     </parent>
@@ -28,7 +28,7 @@
         <spring-cloud.version>2025.1.0</spring-cloud.version>
         <spring-cloud-schema-registry-client.version>1.1.5</spring-cloud-schema-registry-client.version>
         <avro.version>1.12.1</avro.version>
-        <ivanfranchin-commons-news.version>1.0.0</ivanfranchin-commons-news.version>
+        <commons-news.version>1.0.0</commons-news.version>
         <springdoc-openapi.version>3.0.0</springdoc-openapi.version>
     </properties>
     <dependencies>
@@ -89,9 +89,9 @@
 
         <!-- commons-news -->
         <dependency>
-            <groupId>com.ivanfranchin</groupId>
+            <groupId>com.bit</groupId>
             <artifactId>commons-news</artifactId>
-            <version>${ivanfranchin-commons-news.version}</version>
+            <version>${commons-news.version}</version>
         </dependency>
 
         <!-- SpringDoc OpenApi -->

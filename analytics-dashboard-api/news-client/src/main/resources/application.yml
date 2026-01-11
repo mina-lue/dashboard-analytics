@@ -13,7 +13,7 @@ spring:
           enable-observation: true
       bindings:
         news-in-0:
-          destination: com.ivanfranchin.newspipeline.collector.news
+          destination: com.bit.newspipeline.collector.news
           content-type: application/*+avro
           group: newsClientGroup
           consumer:

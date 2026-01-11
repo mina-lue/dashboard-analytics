@@ -7,12 +7,12 @@
         <version>4.0.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.ivanfranchin</groupId>
-    <artifactId>spring-cloud-stream-kafka-elasticsearch</artifactId>
+    <groupId>com.bit</groupId>
+    <artifactId>news-analytics-dashboard</artifactId>
     <version>1.0.0</version>
     <packaging>pom</packaging>
-    <name>spring-cloud-stream-kafka-elasticsearch</name>
-    <description>News Pipeline</description>
+    <name>news-analytics-dashboard</name>
+    <description>News Analytics Dashboard - Real-time data pipeline with Kafka and Elasticsearch</description>
     <url/>
     <licenses>
         <license/>
@@ -30,7 +30,7 @@
         <java.version>25</java.version>
     </properties>
     <modules>
-        <module>eureka-server</module>
+        <module>news-server</module>
         <module>producer-api</module>
         <module>categorizer-service</module>
         <module>collector-service</module>
