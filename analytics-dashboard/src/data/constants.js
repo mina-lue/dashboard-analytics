@@ -17,4 +17,4 @@ export const TRAFFIC_DATA = [
     { time: '23:59', events: 50, latency: 13, throughput: 35, cpu: 20, memory: 60, nodes: 4 },
 ];
 
-export const COLORS = ['#6366f1', '#6366f1', '#f59e0b', '#10b981', '#3b82f6'];
+export const COLORS = ['#6366f1', '#ec4899', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6', '#ef4444', '#14b8a6', '#f97316'];

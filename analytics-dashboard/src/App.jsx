@@ -337,16 +337,7 @@ setPreviousDataLength(newsData.length);
           <div className="grid grid-cols-12 gap-6 min-h-0 flex-1 w-full">
             {activeTab === 'Analytics Hub' && (
               <>
-                {/* Summary Panel */}
-                <div className="col-span-12 mb-4">
-                  <SummaryPanel
-                    lastUpdated={lastUpdated}
-                    isLive={isLive}
-                    totalEvents={analyticsStats?.totalEvents || newsData.length}
-                    eventsLastHour={analyticsStats?.eventsLastHour}
-                    isRefreshing={isRefreshing}
-                  />
-                </div>
+                
 
                 {/* Row 1: KPIs */}
                 <div className="col-span-12 mb-4">
@@ -433,7 +424,12 @@ setPreviousDataLength(newsData.length);
             )}
 
             {activeTab === 'Geographic Map' && (
-              <GeoDistribution categoryCounts={categoryCounts} totalEvents={newsData.length} />
+              <GeoDistribution 
+                categoryCounts={categoryCounts} 
+                totalEvents={analyticsStats?.totalEvents || newsData.length}
+                analyticsStats={analyticsStats}
+                eventsLastHour={analyticsStats?.eventsLastHour || 0}
+              />
             )}
           </div>
         </div>
