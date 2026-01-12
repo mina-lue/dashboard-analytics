@@ -1,4 +1,4 @@
-package com.ivanfranchin.newsclient.util;
+package com.bit.newsclient.util;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;

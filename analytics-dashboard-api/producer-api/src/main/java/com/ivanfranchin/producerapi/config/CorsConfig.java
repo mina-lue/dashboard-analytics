@@ -1,4 +1,4 @@
-package com.ivanfranchin.producerapi.config;
+package com.bit.producerapi.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

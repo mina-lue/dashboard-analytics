@@ -1,4 +1,4 @@
-package com.ivanfranchin.publisherapi.config;
+package com.bit.publisherapi.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;

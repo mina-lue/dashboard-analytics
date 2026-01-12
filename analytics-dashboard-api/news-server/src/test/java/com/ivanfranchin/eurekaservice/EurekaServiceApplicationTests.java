@@ -1,4 +1,4 @@
-package com.ivanfranchin.eurekaservice;
+package com.bit.eurekaservice;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

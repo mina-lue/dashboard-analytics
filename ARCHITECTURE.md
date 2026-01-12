@@ -72,19 +72,19 @@ This ensures the dashboard remains responsive even under heavy load while provid
 
 #### Event Types:
 1. **NewsEvent** (from Producer API):
-   - Published to topic: `com.ivanfranchin.newspipeline.producer.news`
+   - Published to topic: `com.bit.newspipeline.producer.news`
    - Contains: id, title, text, category (initial), datetime
    - Format: Avro serialized with Schema Registry
    - Frequency: Generated every 5 seconds automatically, or on-demand via POST
 
 2. **CategorizedEvent** (from Categorizer Service):
-   - Published to topic: `com.ivanfranchin.newspipeline.categorizer.news`
+   - Published to topic: `com.bit.newspipeline.categorizer.news`
    - Contains: Enriched news with final category classification
    - Process: Categorizer analyzes title/text and assigns category (Technology, Finance, Sports, Health, Entertainment)
 
 #### Kafka Topics:
-- **Producer Topic**: `com.ivanfranchin.newspipeline.producer.news` (2 partitions)
-- **Categorizer Topic**: `com.ivanfranchin.newspipeline.categorizer.news` (2 partitions)
+- **Producer Topic**: `com.bit.newspipeline.producer.news` (2 partitions)
+- **Categorizer Topic**: `com.bit.newspipeline.categorizer.news` (2 partitions)
 - **Consumer Groups**: `collectorGroup` (for collector service)
 - **Partitioning**: Uses partition key from headers for load distribution
 

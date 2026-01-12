@@ -1,4 +1,4 @@
-package com.ivanfranchin.collectorservice;
+package com.bit.collectorservice;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

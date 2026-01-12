@@ -1,6 +1,6 @@
-package com.ivanfranchin.publisherapi.news;
+package com.bit.publisherapi.news;
 
-import com.ivanfranchin.publisherapi.news.model.News;
+import com.bit.publisherapi.news.model.News;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;

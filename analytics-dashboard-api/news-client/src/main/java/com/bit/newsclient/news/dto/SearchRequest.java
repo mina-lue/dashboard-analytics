@@ -1,4 +1,4 @@
-package com.ivanfranchin.newsclient.news.dto;
+package com.bit.newsclient.news.dto;
 
 import lombok.Data;
 

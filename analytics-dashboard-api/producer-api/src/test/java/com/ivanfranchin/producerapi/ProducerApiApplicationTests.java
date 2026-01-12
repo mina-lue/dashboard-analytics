@@ -1,4 +1,4 @@
-package com.ivanfranchin.producerapi;
+package com.bit.producerapi;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

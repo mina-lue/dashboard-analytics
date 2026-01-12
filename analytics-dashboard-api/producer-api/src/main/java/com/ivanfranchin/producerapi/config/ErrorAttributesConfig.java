@@ -1,4 +1,4 @@
-package com.ivanfranchin.producerapi.config;
+package com.bit.producerapi.config;
 
 import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.error.ErrorAttributeOptions.Include;

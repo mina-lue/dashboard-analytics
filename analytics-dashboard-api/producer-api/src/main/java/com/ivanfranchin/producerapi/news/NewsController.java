@@ -1,4 +1,4 @@
-package com.ivanfranchin.producerapi.news;
+package com.bit.producerapi.news;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

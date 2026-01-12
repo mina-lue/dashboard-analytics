@@ -1,4 +1,4 @@
-package com.ivanfranchin.producerapi.config;
+package com.bit.producerapi.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;

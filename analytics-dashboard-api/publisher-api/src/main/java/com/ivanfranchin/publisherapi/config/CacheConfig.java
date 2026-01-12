@@ -1,4 +1,4 @@
-package com.ivanfranchin.publisherapi.config;
+package com.bit.publisherapi.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.Cache;

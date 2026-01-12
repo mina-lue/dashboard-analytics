@@ -1,4 +1,4 @@
-package com.ivanfranchin.newsclient;
+package com.bit.newsclient;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

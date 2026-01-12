@@ -1,7 +1,7 @@
-package com.ivanfranchin.publisherapi.news;
+package com.bit.publisherapi.news;
 
-import com.ivanfranchin.publisherapi.news.exception.NewsNotFoundException;
-import com.ivanfranchin.publisherapi.news.model.News;
+import com.bit.publisherapi.news.exception.NewsNotFoundException;
+import com.bit.publisherapi.news.model.News;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;

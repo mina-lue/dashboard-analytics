@@ -1,7 +1,7 @@
-package com.ivanfranchin.publisherapi.news;
+package com.bit.publisherapi.news;
 
-import com.ivanfranchin.publisherapi.news.dto.SearchRequest;
-import com.ivanfranchin.publisherapi.news.model.News;
+import com.bit.publisherapi.news.dto.SearchRequest;
+import com.bit.publisherapi.news.model.News;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

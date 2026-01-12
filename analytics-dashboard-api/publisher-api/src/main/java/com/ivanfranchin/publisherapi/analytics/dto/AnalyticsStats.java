@@ -1,4 +1,4 @@
-package com.ivanfranchin.publisherapi.analytics.dto;
+package com.bit.publisherapi.analytics.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,6 +1,6 @@
-package com.ivanfranchin.producerapi.news;
+package com.bit.producerapi.news;
 
-import com.ivanfranchin.commonsnews.avro.NewsEvent;
+import com.bit.commonsnews.avro.NewsEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

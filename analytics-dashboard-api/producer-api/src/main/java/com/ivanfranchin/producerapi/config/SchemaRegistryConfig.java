@@ -1,4 +1,4 @@
-package com.ivanfranchin.producerapi.config;
+package com.bit.producerapi.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.schema.registry.avro.AvroSchemaMessageConverter;

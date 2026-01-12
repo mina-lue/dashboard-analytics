@@ -1,4 +1,4 @@
-package com.ivanfranchin.publisherapi.news.exception;
+package com.bit.publisherapi.news.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

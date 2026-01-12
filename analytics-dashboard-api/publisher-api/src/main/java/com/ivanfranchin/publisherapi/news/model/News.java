@@ -1,4 +1,4 @@
-package com.ivanfranchin.publisherapi.news.model;
+package com.bit.publisherapi.news.model;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;

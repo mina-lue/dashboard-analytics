@@ -1,4 +1,4 @@
-package com.ivanfranchin.publisherapi.config;
+package com.bit.publisherapi.config;
 
 import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.error.ErrorAttributeOptions.Include;

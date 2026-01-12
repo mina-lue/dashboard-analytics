@@ -1,4 +1,4 @@
-package com.ivanfranchin.publisherapi.config;
+package com.bit.publisherapi.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;

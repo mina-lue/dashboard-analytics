@@ -1,4 +1,4 @@
-package com.ivanfranchin.categorizerservice;
+package com.bit.categorizerservice;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

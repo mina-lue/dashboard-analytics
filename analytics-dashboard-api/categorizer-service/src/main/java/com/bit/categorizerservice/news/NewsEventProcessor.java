@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.integration.IntegrationMessageHeaderAccessor;
 import org.springframework.kafka.support.KafkaHeaders;
-import org.springframeswork.messaging.Message;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;

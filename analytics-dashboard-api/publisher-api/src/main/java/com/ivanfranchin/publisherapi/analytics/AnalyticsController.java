@@ -1,6 +1,6 @@
-package com.ivanfranchin.publisherapi.analytics;
+package com.bit.publisherapi.analytics;
 
-import com.ivanfranchin.publisherapi.analytics.dto.AnalyticsStats;
+import com.bit.publisherapi.analytics.dto.AnalyticsStats;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -1,8 +1,8 @@
-package com.ivanfranchin.publisherapi.analytics;
+package com.bit.publisherapi.analytics;
 
-import com.ivanfranchin.publisherapi.analytics.dto.AnalyticsStats;
-import com.ivanfranchin.publisherapi.news.NewsRepository;
-import com.ivanfranchin.publisherapi.news.model.News;
+import com.bit.publisherapi.analytics.dto.AnalyticsStats;
+import com.bit.publisherapi.news.NewsRepository;
+import com.bit.publisherapi.news.model.News;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
